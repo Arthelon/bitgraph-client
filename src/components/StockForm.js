@@ -54,6 +54,8 @@ class StockForm extends Component {
     }
 
     createMessage(success) {
+        this.form._form.reset()
+        console.log(this.form._form)
         if (success) {
             this.setState({
                 message: {
@@ -75,7 +77,9 @@ class StockForm extends Component {
         const { message } = this.state
 
         return (
-            <Form onSubmit={this.handleSubmit}>
+            <Form onSubmit={this.handleSubmit} ref={(form) => {
+                this.form = form
+            }}>
                 <Group>
                     <Input label='Stock Symbol' name='stock_symbol' placeholder='Example: AAPL' onChange={this.handleSymbolChange}/>
                 </Group>
