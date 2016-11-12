@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Form, Button } from 'semantic-ui-react'
+import { Form, Button, Message } from 'semantic-ui-react'
 import axios from 'axios'
 import { API_URL } from '../constants'
 
@@ -14,7 +14,7 @@ class StockForm extends Component {
 
     state = {
         form: {},
-        success: false
+        message: {}
     }
 
     constructor(props) {
@@ -23,6 +23,7 @@ class StockForm extends Component {
         this.handleQuantityChange = this.handleQuantityChange.bind(this)
         this.handleTransactionChange = this.handleTransactionChange.bind(this)
         this.handleSymbolChange = this.handleSymbolChange.bind(this)
+        this.createMessage = this.createMessage.bind(this)
     }
 
     handleSubmit(e, form) {
@@ -32,8 +33,10 @@ class StockForm extends Component {
         axios.post(API_URL + "/trade", form, {
             headers: { "Content-Type": "application/json"}
         }).then(res => {
+            this.createMessage(true)
             console.log(res.data)
         }, err => {
+            this.createMessage(false)
             console.log(err)
         })
     }
@@ -50,8 +53,27 @@ class StockForm extends Component {
         this.props.setStockSymbol(e.target.value)
     }
 
+    createMessage(success) {
+        if (success) {
+            this.setState({
+                message: {
+                    color: "green",
+                    message: "Transaction successful"
+                }
+            })
+        } else {
+            this.setState({
+                message: {
+                    color: "red",
+                    message: "Error occured"
+                }
+            })
+        }
+    }
 
     render () {
+        const { message } = this.state
+
         return (
             <Form onSubmit={this.handleSubmit}>
                 <Group>
@@ -71,6 +93,13 @@ class StockForm extends Component {
                     <Input placeholder="Limit Value" name="limit_price" type="number"/>
                 </Group>
                 <Button type="submit" primary>Submit</Button>
+                {Object.keys(message).length > 0 &&
+                    <Message color={message.color}>
+                        <Message.Content>
+                            <Message.Header>{message.message}</Message.Header>
+                        </Message.Content>
+                    </Message>
+                }
             </Form>
         )
     }
