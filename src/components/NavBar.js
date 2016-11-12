@@ -12,7 +12,7 @@ class NavBar extends Component {
             currPage: this.context.router.location.pathname.slice(1)
         })
     }
-
+    
     state = {
         currPage: ""
     }
