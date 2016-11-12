@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import ChatBar from '../components/ChatBar'
 import ChatWindow from '../components/ChatWindow'
 import { Grid } from 'semantic-ui-react'
+import { CLUSTER_ID } from '../constants'
 
 class ChatPage extends Component {
 
@@ -23,11 +24,11 @@ class ChatPage extends Component {
     render () {
         return (
             <Grid celled>
-                <Grid.Column width={4}>
-                    <ChatBar onUserClick={this.handleUserClick} />
+                <Grid.Column width={5}>
+                    <ChatBar clusterId={CLUSTER_ID} onUserClick={this.handleUserClick} />
                 </Grid.Column>
-                <Grid.Column width={12}>
-                    <ChatWindow clusterId="myclusterId" user={this.state.currUser} />
+                <Grid.Column width={11}>
+                    <ChatWindow clusterId={CLUSTER_ID} user={this.state.currUser} />
                 </Grid.Column>
             </Grid>
         )

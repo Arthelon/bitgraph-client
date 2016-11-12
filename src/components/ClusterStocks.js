@@ -5,28 +5,38 @@ import update from 'react-addons-update'
 
 const { Header, Row, HeaderCell, Cell, Body } = Table
 
+const styles = {
+    height: "300px",
+    overflow: "scroll"
+}
 
 class ClusterStocks extends Component {
 
     static propTypes = {
-        symbols: React.PropTypes.array.isRequired
+        stocks: React.PropTypes.array.isRequired
     }
 
     state = {
         stocks: []
     }
 
-    componentWillReceiveProps(props) {
+    constructor(props) {
+        super(props)
+        this.pollStocks = this.pollStocks.bind(this)
+    }
+
+    pollStocks(p) {
+        const props = p || this.props
         clearInterval(this.interval)
         this.setState({
-            symbols: []
+            stocks: []
         })
         this.interval = setInterval(() => {
-            props.symbols.forEach(symbol => {
+            props.stocks.forEach(symbol => {
                 getStockData(symbol).then(res => {
                     this.setState({
-                        symbols: update(this.state.symbols, {
-                            $push: [Object.ares]
+                        stocks: update(this.state.stocks, {
+                            $push: [Object.assign(res, {symbol})]
                         })
                     })
                 }, err => {
@@ -36,10 +46,18 @@ class ClusterStocks extends Component {
         }, 2000)
     }
 
+    componentDidMount() {
+        this.pollStocks()
+    }
+
+    componentWillReceiveProps(props) {
+        this.pollStocks(props)
+    }
+
     render () {
 
         return (
-            <div>
+            <div style={styles}>
                 <h3>Cluster Stocks</h3>
                 <Table celled>
                     <Header>

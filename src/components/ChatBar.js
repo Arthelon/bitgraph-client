@@ -17,17 +17,28 @@ class ChatBar extends Component {
     }
     
     static propTypes = {
-        onUserClick: React.PropTypes.func.isRequired
+        onUserClick: React.PropTypes.func.isRequired,
+        clusterId: React.PropTypes.string.isRequired
     }
 
     state = {
-        users: []
+        users: [],
+        stocks: []
     }
 
     componentDidMount() {
         db.get("users").then(res => {
             this.setState({
                 users: res.users
+            })
+        }, err => {
+            console.log(err)
+        })
+        db.get(this.props.clusterId).then(res => {
+            console.log("res")
+            console.log(res)
+            this.setState({
+                stocks: res.stocks
             })
         }, err => {
             console.log(err)
@@ -39,7 +50,7 @@ class ChatBar extends Component {
     }
 
     render () {
-        const { users } = this.state
+        const { users, stocks } = this.state
         return (
             <div>
                 <Icon name="home" onClick={() => {
@@ -66,7 +77,7 @@ class ChatBar extends Component {
                         <Item><Content content="No users found!"/></Item>
                     }
                 </Group>
-                <ClusterStocks symbols={[]}/>
+                <ClusterStocks stocks={stocks}/>
             </div>
         )
     }
