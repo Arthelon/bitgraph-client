@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import { Form, Button } from 'semantic-ui-react'
+import axios from 'axios'
+import { API_URL } from '../constants'
 
 const { Group, Input, Select, Checkbox } = Form
 
@@ -22,8 +24,8 @@ class StockForm extends Component {
     handleSubmit(e, form) {
         e.preventDefault()
         form.quantity = parseInt(form.quantity, 10)
-        this.setState({ form })
-        console.log(form)
+        form.type = form.type[0]
+        // axios.post(API_URL)
     }
 
     handleQuantityChange(e) {
@@ -51,7 +53,7 @@ class StockForm extends Component {
                 </Group>
                 <Group>
                     <Checkbox label="Limit" value="limit" name="type"/>
-                    <Input placeholder="Limit Value" name="limit_price"/>
+                    <Input placeholder="Limit Value" name="limit_price" type="number"/>
                 </Group>
                 <Button type="submit" primary>Submit</Button>
             </Form>

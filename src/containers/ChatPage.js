@@ -23,7 +23,7 @@ class ChatPage extends Component {
 
     render () {
         return (
-            <Grid celled>
+            <Grid style={{marginTop: 0}} celled>
                 <Grid.Column width={5}>
                     <ChatBar clusterId={CLUSTER_ID} onUserClick={this.handleUserClick} />
                 </Grid.Column>

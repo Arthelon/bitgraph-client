@@ -91,11 +91,11 @@ class ClusterStocks extends Component {
                     <Body>
                         {this.state.stocks.map(stock => {
                             return (<Row key={stock.id}>
-                                <Cell>{stock.symbol}</Cell>
-                                <Cell>{stock.dayHigh}</Cell>
-                                <Cell>{stock.dayLow}</Cell>
-                                <Cell>{stock.ask}</Cell>
-                                <Cell>{stock.bid}</Cell>
+                                <Cell>${stock.symbol}</Cell>
+                                <Cell>${stock.dayHigh}</Cell>
+                                <Cell>${stock.dayLow}</Cell>
+                                <Cell>${stock.ask}</Cell>
+                                <Cell>${stock.bid}</Cell>
                             </Row>)
                         })}
                     </Body>

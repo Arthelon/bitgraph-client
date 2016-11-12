@@ -1,11 +1,9 @@
 import React, {Component} from 'react'
 
 class IndexPage extends Component {
-    render () {
+    render() {
         return (
-            <div>
-                <h1>Index</h1>
-            </div>
+            <div>Index</div>
         )
     }
 }

@@ -195,6 +195,7 @@ module.exports = {
     tls: 'empty'
   },
   externals: {
-    Gun: "Gun"
+    Cubism: "cubism",
+    d3: "d3"
   }
 };

@@ -1,5 +1,5 @@
 import Pouch from 'pouchdb'
-import { CLUSTER_ID, CLUSTER_DATA } from './constants'
+import { CLUSTER_ID, CLUSTER_DATA, CLUSTER_INDEX } from './constants'
 import uuid from 'uuid'
 
 const pouch = new Pouch("BitGraph")
@@ -22,7 +22,7 @@ const pouch = new Pouch("BitGraph")
 // })
 // pouch.put({
 //     _id: CLUSTER_ID,
-//     stocks: CLUSTER_DATA[2],
+//     stocks: CLUSTER_DATA[CLUSTER_INDEX],
 //     messages: []
 // })
 export default pouch

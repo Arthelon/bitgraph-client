@@ -6,6 +6,7 @@ import ChatPage from './containers/ChatPage'
 import TradePage from './containers/TradePage'
 import UserPage from './containers/UserPage'
 import ClusterPage from './containers/ClusterPage'
+import StockPage from './containers/StockPage'
 
 const getRoutes = () => {
     return (
@@ -15,6 +16,7 @@ const getRoutes = () => {
             <Route path="/trade" component={TradePage} />
             <Route path="/chat" component={ChatPage} />
             <Route path="/cluster" component={ClusterPage} />
+            <Route path="/stock" component={StockPage} />
         </Route>
     )
 }

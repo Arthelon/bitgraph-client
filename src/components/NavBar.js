@@ -28,7 +28,7 @@ class NavBar extends Component {
         const { currPage } = this.state
 
         return (
-            <Menu>
+            <Menu style={{marginBottom: 0}}>
                 <Menu.Item
                     name="Home"
                     active={currPage === ""}
@@ -48,6 +48,11 @@ class NavBar extends Component {
                     name="Clusters"
                     active={currPage === "cluster"}
                     onClick={this.handleClick.bind(this, "cluster")}
+                />
+                <Menu.Item
+                    name="Stocks"
+                    active={currPage === "stock"}
+                    onClick={this.handleClick.bind(this, "stock")}
                 />
                 <Menu.Item
                     position="right"

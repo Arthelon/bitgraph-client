@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { Item, Icon } from 'semantic-ui-react'
 import db from '../db'
 import ClusterStocks from './ClusterStocks'
+import ClusterStocksGraph from './ClusterStocksGraph'
 import uuid from 'uuid'
 
 const containerStyle = {
@@ -77,6 +78,7 @@ class ChatBar extends Component {
                         <Item><Content content="No users found!"/></Item>
                     }
                 </Group>
+                
                 <ClusterStocks stocks={stocks}/>
             </div>
         )
