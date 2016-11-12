@@ -12,7 +12,7 @@ class NavBar extends Component {
             currPage: this.context.router.location.pathname.slice(1)
         })
     }
-    
+
     state = {
         currPage: ""
     }
@@ -45,7 +45,7 @@ class NavBar extends Component {
                     onClick={this.handleClick.bind(this, "trade")}
                 />
                 <Menu.Item
-                    name="Clusters"
+                    name="Cluster"
                     active={currPage === "cluster"}
                     onClick={this.handleClick.bind(this, "cluster")}
                 />

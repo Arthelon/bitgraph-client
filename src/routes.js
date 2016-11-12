@@ -11,11 +11,11 @@ import StockPage from './containers/StockPage'
 const getRoutes = () => {
     return (
         <Route path="/" component={App} >
-            <IndexRoute component={IndexPage} />
+            <IndexRoute component={ClusterPage} />
             <Route path="/user" component={UserPage} />
             <Route path="/trade" component={TradePage} />
             <Route path="/chat" component={ChatPage} />
-            <Route path="/cluster" component={ClusterPage} />
+            <Route path="/cluster" component={IndexPage} />
             <Route path="/stock" component={StockPage} />
         </Route>
     )
