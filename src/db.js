@@ -1,4 +1,4 @@
 import Gun from "Gun"
 
-const gun = Gun("https://gundb-server.herokuapp.com/")
+const gun = Gun()
 export default gun

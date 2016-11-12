@@ -7,6 +7,12 @@ class NavBar extends Component {
         router: React.PropTypes.object.isRequired
     }
 
+    componentDidMount() {
+        this.setState({
+            currPage: this.context.router.location.pathname.slice(1)
+        })
+    }
+
     state = {
         currPage: ""
     }
