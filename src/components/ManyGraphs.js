@@ -79,7 +79,7 @@ class ManyGraphs extends Component {
                                     href="javascript:dc.filterAll(); dc.renderAll();">Reset All</a>
                             </div>
                         </div>
-                        <table className="ui table table-hover dc-data-table">
+                        <table className="ui table dc-data-table">
                         </table>
                     </Grid.Column>
                 </Grid.Row>

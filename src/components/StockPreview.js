@@ -33,7 +33,7 @@ class StockPreview extends Component {
                 <h1>Order Preview</h1>
                 {Object.keys(stock).length > 0 &&
                     <div>
-                        <h2>{stock.name}</h2>
+                        <h2>{stock.name.split("\"").join("")}</h2>
                         <Table celled>
                             <Table.Header>
                                 <Table.Row>
