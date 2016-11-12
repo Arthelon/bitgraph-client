@@ -143,7 +143,8 @@ module.exports = {
           limit: 10000,
           name: 'static/media/[name].[hash:8].[ext]'
         }
-      }
+      },
+      { test: /\.csv$/, loader: 'dsv-loader' }
     ]
   },
   
@@ -196,6 +197,8 @@ module.exports = {
   },
   externals: {
     Cubism: "cubism",
-    d3: "d3"
+    d3: "d3",
+    crossfilter: "crossfilter",
+    dc: "dc"
   }
 };
