@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { Table } from 'semantic-ui-react'
 import { getStockData } from '../utils' 
 import update from 'react-addons-update'
+import uuid from 'uuid'
 
 const { Header, Row, HeaderCell, Cell, Body } = Table
 
@@ -17,7 +18,8 @@ class ClusterStocks extends Component {
     }
 
     state = {
-        stocks: []
+        stocks: [],
+        first: true
     }
 
     constructor(props) {
@@ -27,31 +29,48 @@ class ClusterStocks extends Component {
 
     pollStocks(p) {
         const props = p || this.props
-        clearInterval(this.interval)
-        this.setState({
-            stocks: []
-        })
-        this.interval = setInterval(() => {
-            props.stocks.forEach(symbol => {
-                getStockData(symbol).then(res => {
-                    this.setState({
-                        stocks: update(this.state.stocks, {
-                            $push: [Object.assign(res, {symbol})]
-                        })
+        // clearInterval(this.interval)
+        // this.setState({
+        //     stocks: []
+        // })
+        // this.interval = setInterval(() => {
+        //     props.stocks.forEach(symbol => {
+        //         getStockData(symbol).then(res => {
+        //             this.setState({
+        //                 stocks: update(this.state.stocks, {
+        //                     $push: [Object.assign(res, {symbol})]
+        //                 })
+        //             })
+        //         }, err => {
+        //             console.log(err)
+        //         })
+        //     })
+        // }, 2000)
+        props.stocks.forEach(symbol => {
+            getStockData(symbol).then(res => {
+                this.setState({
+                    stocks: update(this.state.stocks, {
+                        $push: [Object.assign(res, {symbol, id: uuid.v4()})]
                     })
-                }, err => {
-                    console.log(err)
                 })
+            }, err => {
+                console.log(err)
             })
-        }, 2000)
+        })
     }
 
     componentDidMount() {
-        this.pollStocks()
+        this.pollStocks(this.props)
     }
 
     componentWillReceiveProps(props) {
-        this.pollStocks(props)
+        console.log("RECEIVE")
+        if (this.state.first && props.stocks.length > 0) {
+            this.pollStocks(props)
+            this.setState({
+                first: false
+            })
+        }
     }
 
     render () {
@@ -71,7 +90,7 @@ class ClusterStocks extends Component {
                     </Header>
                     <Body>
                         {this.state.stocks.map(stock => {
-                            return (<Row>
+                            return (<Row key={stock.id}>
                                 <Cell>{stock.symbol}</Cell>
                                 <Cell>{stock.dayHigh}</Cell>
                                 <Cell>{stock.dayLow}</Cell>

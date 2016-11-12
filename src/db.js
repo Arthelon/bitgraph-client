@@ -12,13 +12,13 @@ const pouch = new Pouch("BitGraph")
 //         {name: "Kenta", id: uuid.v4(), online: false}
 //     ]
 // })
-// pouch.put({
-//     _id: "d0ff4ef0-c991-462b-b917-294cfe8019fd",
-//     messages: []
-// })
-// pouch.put({
-//     _id: "0eb973a3-45de-43e1-99bb-2d33c7685013",
-//     messages: []
+// pouch.get("users").then(users => {
+//     users.users.forEach(user => {
+//         pouch.put({
+//             _id: user.id,
+//             messages: []
+//         })
+//     })
 // })
 // pouch.put({
 //     _id: CLUSTER_ID,

@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import db from '../db'
 import { List, Input, Button } from 'semantic-ui-react'
 import update from 'react-addons-update'
-import { USERNAME } from '../constants'
+import { USERNAME, CLUSTER_DATA } from '../constants'
 import uuid from 'uuid'
 
 const listStyle = {
@@ -43,7 +43,8 @@ class ChatWindow extends Component {
         db.put({
             _id: this.props.user.id || this.props.clusterId,
             _rev: this.state.rev,
-            messages: newMessages
+            messages: newMessages,
+            stocks: CLUSTER_DATA[2]
         }).then(res => {
             this.setState({
                 rev: res.rev
@@ -66,8 +67,9 @@ class ChatWindow extends Component {
     }
 
     componentWillReceiveProps(props) {
-        console.log(props.user.id)
         db.get(props.user.id).then(data => {
+            console.log("data")
+            console.log(data)
             this.setState({
                 rev: data._rev,
                 messages: data.messages
