@@ -30,7 +30,7 @@ class NavBar extends Component {
         return (
             <Menu style={{marginBottom: 0, zIndex: 1000}}>
                 <Menu.Item
-                    name="Home"
+                    name="Clusters"
                     active={currPage === ""}
                     onClick={this.handleClick.bind(this, "")}
                 />
@@ -45,7 +45,7 @@ class NavBar extends Component {
                     onClick={this.handleClick.bind(this, "trade")}
                 />
                 <Menu.Item
-                    name="Cluster"
+                    name="Home"
                     active={currPage === "cluster"}
                     onClick={this.handleClick.bind(this, "cluster")}
                 />

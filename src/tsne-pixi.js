@@ -540,4 +540,9 @@ const loadPixi = target => {
         return Math.max.apply(null, this);
     }
 }
-export default loadPixi
+const removePixi = () => {
+    d3.selectAll('.iteration').remove();
+    d3.selectAll('svg').remove();
+    d3.select('#chart').remove();
+}
+export {loadPixi, removePixi}

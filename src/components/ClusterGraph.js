@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import "../tsne"
-import loadPixi from "../tsne-pixi"
+import {loadPixi, removePixi} from "../tsne-pixi"
 
 const styles = {
     width: "100%",
@@ -11,7 +11,11 @@ const styles = {
 class ClusterGraph extends Component {
 
     componentDidMount() {
-        loadPixi()
+        loadPixi();
+    }
+
+    componentWillUnmount() {
+        removePixi();
     }
 
     render () {
