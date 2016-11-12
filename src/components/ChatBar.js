@@ -1,13 +1,11 @@
 import React, {Component} from 'react'
 import { Item } from 'semantic-ui-react'
-import update from 'react-addons-update'
 import db from '../db'
-import uuid from 'uuid'
+import ClusterStocks from './ClusterStocks'
 
 const containerStyle = {
-    background: "#efefef",
     overflow: "scroll",
-    maxHeight: "600px"
+    height: "300px"
 }
 const { Group, Content } = Item
 
@@ -46,8 +44,8 @@ class ChatBar extends Component {
     render () {
         const { users } = this.state
         return (
-            <div style={containerStyle}>
-                <Group> 
+            <div>
+                <Group style={containerStyle}> 
                     {users.length > 0 ? 
                         users.map(user => {
                             return (
@@ -63,6 +61,7 @@ class ChatBar extends Component {
                         <Item><Content content="No users found!"/></Item>
                     }
                 </Group>
+                <ClusterStocks symbols={[]}/>
             </div>
         )
     }

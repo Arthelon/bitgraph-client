@@ -1,35 +1,6 @@
 import React, {Component} from 'react'
-import axios from 'axios'
 import { Table } from 'semantic-ui-react'
-
-const csvJSON = csv => {
-
-  const data = csv.split(",")
-  const result = {
-      dayLow: data[0],
-      dayHigh: data[1],
-      ask: data[2],
-      bid: data[3],
-      name: data[4]
-  }
-  return result; //JSON
-}
-
-
-const getStockData = symbol => {
-    return new Promise((resolve, reject) => {
-        axios.get(`http://finance.yahoo.com/d/quotes.csv`, {
-            params: {
-                s: symbol.toUpperCase(),
-                f: "ghabn"
-            }
-        }).then(res => {
-            resolve(csvJSON(res.data))
-        }, err => {
-            reject(err)
-        })
-    })
-}
+import { getStockData } from '../utils'
 
 class StockPreview extends Component {
 
