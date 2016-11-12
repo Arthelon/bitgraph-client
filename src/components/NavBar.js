@@ -45,6 +45,11 @@ class NavBar extends Component {
                     onClick={this.handleClick.bind(this, "trade")}
                 />
                 <Menu.Item
+                    name="Clusters"
+                    active={currPage === "cluster"}
+                    onClick={this.handleClick.bind(this, "cluster")}
+                />
+                <Menu.Item
                     position="right"
                     icon="user"
                     onClick={this.handleClick.bind(this, "user")}

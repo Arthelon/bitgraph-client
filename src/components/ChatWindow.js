@@ -3,6 +3,7 @@ import db from '../db'
 import { List, Input, Button } from 'semantic-ui-react'
 import update from 'react-addons-update'
 import { USERNAME } from '../constants'
+import uuid from 'uuid'
 
 const listStyle = {
     width: "100%",
@@ -22,41 +23,44 @@ class ChatWindow extends Component {
     }
 
     state = {
-        messages: []
+        messages: [],
+        rev: ""
     }
 
     handleSubmit() {
         const value = this.input.value
-        this.messages.set({
-            name: USERNAME,
-            content: value
+        const newMessages = update(this.state.messages, {
+                $push: [{
+                    id: uuid.v4(),
+                    name: USERNAME,
+                    content: value
+                }]
+            })
+        this.setState({
+            messages: newMessages
+        })
+        db.put({
+            _id: this.props.user.id,
+            _rev: this.state.rev,
+            messages: newMessages
+        }).then(res => {
+            this.setState({
+                rev: res.rev
+            })
+        }, err => {
+            console.log(err)
         })
         this.input.value = ""
     }
 
     componentWillReceiveProps(props) {
-        console.log(props.user.id)
-        const messages = this.messages = db.path(props.user.id).get("messages")
-        // messages.set({
-        //     name: "Daniel",
-        //     content: "test"
-        // })
-
-        this.setState({messages: []})
-
-        messages.map().val((message, id) => {
-            console.log(props.user.id)
-            const {messages} = this.state
-            const found = messages.filter(m => {
-                return m.id === id
-            }).length > 0
-            message = Object.assign(message, {id})
-            if (!found)
-                this.setState({
-                    messages: update(messages, {
-                        $push: [message]
-                    })
-                })
+        db.get(props.user.id).then(data => {
+            this.setState({
+                rev: data._rev,
+                messages: data.messages
+            })
+        }, err => {
+            console.log(err)
         })
     }
 

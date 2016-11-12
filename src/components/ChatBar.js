@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { Item } from 'semantic-ui-react'
 import update from 'react-addons-update'
 import db from '../db'
+import uuid from 'uuid'
 
 const containerStyle = {
     background: "#efefef",
@@ -21,32 +22,20 @@ class ChatBar extends Component {
     }
 
     componentDidMount() {
-        // db.get("users").set({
-        //     name: "Daniel"
+        // db.put({
+        //     _id: "users",
+        //     users: [
+        //         {name: "Daniel", id: uuid.v4()},
+        //         {name: "Kenta", id: uuid.v4()}
+        //     ]
         // })
-        // console.log('test')
 
-        db.get("users").map().val((user, id) => {
-            console.log(user)
-            const { users } = this.state
-            let found = false
-            user = Object.assign(user, {id})
-            const newUsers = users.map(u => {
-                if (u.id === id) {
-                    found = true
-                    return user
-                } else {
-                    return u
-                }
+        db.get("users").then(res => {
+            this.setState({
+                users: res.users
             })
-            if (!found) 
-                this.setState({
-                    users: update(newUsers, {$push: [user]})
-                })
-            else 
-                this.setState({
-                    users: newUsers
-                })
+        }, err => {
+            console.log(err)
         })
     }
 

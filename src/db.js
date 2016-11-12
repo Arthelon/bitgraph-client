@@ -1,4 +1,4 @@
-import Gun from "Gun"
+import Pouch from 'pouchdb'
 
-const gun = Gun()
-export default gun
+const pouch = new Pouch("BitGraph")
+export default pouch
