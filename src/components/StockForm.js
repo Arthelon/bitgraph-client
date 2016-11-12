@@ -15,25 +15,36 @@ class StockForm extends Component {
     constructor(props) {
         super(props)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleQuantityChange = this.handleQuantityChange.bind(this)
+        this.handleSymbolChange = this.handleSymbolChange.bind(this)
     }
 
     handleSubmit(e, form) {
         e.preventDefault()
+        form.quantity = parseInt(form.quantity, 10)
         this.setState({ form })
         console.log(form)
+    }
+
+    handleQuantityChange(e) {
+        this.props.setQuantity(parseInt(e.target.value, 10))
+    }
+
+    handleSymbolChange(e) {
+        this.props.setStockSymbol(e.target.value)
     }
 
     render () {
         return (
             <Form onSubmit={this.handleSubmit}>
                 <Group>
-                    <Input label='Stock Symbol' name='stock_symbol' placeholder='Example: AAPL' />
+                    <Input label='Stock Symbol' name='stock_symbol' placeholder='Example: AAPL' onChange={this.handleSymbolChange}/>
                 </Group>
                 <Group>
                     <Select label='Transaction Type' placeholder="Buy / Sell" options={transactions} name="transaction"/>
                 </Group>
                 <Group>
-                    <Input label='Quantity' name='quantity' placeholder='Quantity' />
+                    <Input label='Quantity' name='quantity' placeholder='Quantity' type="number" onChange={this.handleQuantityChange}/>
                 </Group>
                 <Group>
                     <Checkbox label="Market" value="market" name="type" defaultChecked={true}/>
