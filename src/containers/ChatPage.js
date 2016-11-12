@@ -27,7 +27,7 @@ class ChatPage extends Component {
                     <ChatBar onUserClick={this.handleUserClick} />
                 </Grid.Column>
                 <Grid.Column width={12}>
-                    <ChatWindow user={this.state.currUser} />
+                    <ChatWindow clusterId="myclusterId" user={this.state.currUser} />
                 </Grid.Column>
             </Grid>
         )

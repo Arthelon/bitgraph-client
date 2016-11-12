@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
-import { Item } from 'semantic-ui-react'
+import { Item, Icon } from 'semantic-ui-react'
 import db from '../db'
 import ClusterStocks from './ClusterStocks'
+import uuid from 'uuid'
 
 const containerStyle = {
     overflow: "scroll",
@@ -10,6 +11,10 @@ const containerStyle = {
 const { Group, Content } = Item
 
 class ChatBar extends Component {
+
+    static contextTypes = {
+        router: React.PropTypes.object.isRequired
+    }
     
     static propTypes = {
         onUserClick: React.PropTypes.func.isRequired
@@ -20,14 +25,6 @@ class ChatBar extends Component {
     }
 
     componentDidMount() {
-        // db.put({
-        //     _id: "users",
-        //     users: [
-        //         {name: "Daniel", id: uuid.v4()},
-        //         {name: "Kenta", id: uuid.v4()}
-        //     ]
-        // })
-
         db.get("users").then(res => {
             this.setState({
                 users: res.users
@@ -45,6 +42,9 @@ class ChatBar extends Component {
         const { users } = this.state
         return (
             <div>
+                <Icon name="home" onClick={() => {
+                    location.reload()
+                }}/>
                 <Group style={containerStyle}> 
                     {users.length > 0 ? 
                         users.map(user => {
@@ -55,6 +55,11 @@ class ChatBar extends Component {
                                     content={user.name}
                                     verticalAlign='middle'
                                 />
+                                {user.online ? 
+                                    <Icon name="circle"/>
+                                :
+                                    <Icon name="circle thin"/>
+                                }
                             </Item>)
                         })
                         :

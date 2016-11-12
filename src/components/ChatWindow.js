@@ -19,7 +19,8 @@ class ChatWindow extends Component {
     }
 
     static propTypes = {
-        user: React.PropTypes.object
+        user: React.PropTypes.object,
+        clusterId: React.PropTypes.string.isRequired
     }
 
     state = {
@@ -40,7 +41,7 @@ class ChatWindow extends Component {
             messages: newMessages
         })
         db.put({
-            _id: this.props.user.id,
+            _id: this.props.user.id || this.props.clusterId,
             _rev: this.state.rev,
             messages: newMessages
         }).then(res => {
@@ -53,7 +54,19 @@ class ChatWindow extends Component {
         this.input.value = ""
     }
 
+    componentDidMount() {
+        db.get(this.props.clusterId).then(data => {
+            this.setState({
+                rev: data._rev,
+                messages: data.messages || []
+            })
+        }, err => {
+            console.log(err)
+        })
+    }
+
     componentWillReceiveProps(props) {
+        console.log(props.user.id)
         db.get(props.user.id).then(data => {
             this.setState({
                 rev: data._rev,
@@ -72,7 +85,7 @@ class ChatWindow extends Component {
             <div>
                 {user ?
                     <div>
-                        <h1>{user.name}</h1>
+                        <h1>{user.name || "Cluster Chat"}</h1>
                         <List style={listStyle}>
                             {messages.length > 0 ?
                                 messages.map(msg => {
