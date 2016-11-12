@@ -12,12 +12,16 @@ const transactions = [
  
 class StockForm extends Component {
 
-    state = {form: {}}
+    state = {
+        form: {},
+        success: false
+    }
 
     constructor(props) {
         super(props)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleQuantityChange = this.handleQuantityChange.bind(this)
+        this.handleTransactionChange = this.handleTransactionChange.bind(this)
         this.handleSymbolChange = this.handleSymbolChange.bind(this)
     }
 
@@ -25,7 +29,17 @@ class StockForm extends Component {
         e.preventDefault()
         form.quantity = parseInt(form.quantity, 10)
         form.type = form.type[0]
-        // axios.post(API_URL)
+        axios.post(API_URL + "/trade", form, {
+            headers: { "Content-Type": "application/json"}
+        }).then(res => {
+            console.log(res.data)
+        }, err => {
+            console.log(err)
+        })
+    }
+
+    handleTransactionChange(e) {
+        this.props.setTransaction(true)
     }
 
     handleQuantityChange(e) {
@@ -36,6 +50,7 @@ class StockForm extends Component {
         this.props.setStockSymbol(e.target.value)
     }
 
+
     render () {
         return (
             <Form onSubmit={this.handleSubmit}>
@@ -43,7 +58,7 @@ class StockForm extends Component {
                     <Input label='Stock Symbol' name='stock_symbol' placeholder='Example: AAPL' onChange={this.handleSymbolChange}/>
                 </Group>
                 <Group>
-                    <Select label='Transaction Type' placeholder="Buy / Sell" options={transactions} name="transaction"/>
+                    <Select label='Transaction Type' placeholder="Buy / Sell" options={transactions} name="transaction" onChange={this.handleTransactionChange}/>
                 </Group>
                 <Group>
                     <Input label='Quantity' name='quantity' placeholder='Quantity' type="number" onChange={this.handleQuantityChange}/>

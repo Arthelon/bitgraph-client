@@ -61,7 +61,7 @@ class ChatBar extends Component {
                     {users.length > 0 ? 
                         users.map(user => {
                             return (
-                            <Item key={user.id} onClick={this.handleClick.bind(this, user)}>
+                            <Item key={user.id} onClick={this.handleClick.bind(this, user)} style={{cursor: "pointer"}}>
                                 <Content
                                     className="chatItem"
                                     content={user.name}

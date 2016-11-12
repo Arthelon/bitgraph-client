@@ -199,6 +199,9 @@ module.exports = {
     Cubism: "cubism",
     d3: "d3",
     crossfilter: "crossfilter",
-    dc: "dc"
+    dc: "dc",
+    PIXI: "PIXI",
+    Spinner: "Spinner",
+    Stats: "Stats"
   }
 };

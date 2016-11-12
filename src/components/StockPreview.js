@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Table } from 'semantic-ui-react'
+import { Table, Header } from 'semantic-ui-react'
 import { getStockData } from '../utils'
 
 class StockPreview extends Component {
@@ -10,7 +10,8 @@ class StockPreview extends Component {
 
     static propTypes = {
         stockSymbol: React.PropTypes.string.isRequired,
-        quantity: React.PropTypes.number.isRequired
+        quantity: React.PropTypes.number.isRequired,
+        transaction: React.PropTypes.bool.isRequired
     }
 
     componentWillReceiveProps(props) {
@@ -25,6 +26,7 @@ class StockPreview extends Component {
 
     render () {
         const {stock} = this.state
+        const {transaction, quantity} = this.props
 
         return (
             <div>
@@ -49,8 +51,13 @@ class StockPreview extends Component {
                                     <Table.Cell>${stock.bid}</Table.Cell>
                                 </Table.Row>
                             </Table.Body>
-
                         </Table>
+                        {transaction && quantity > 0 &&
+                            <div>
+                                <Header as="h3">Sell Price: ${quantity * stock.ask}</Header>
+                                <Header as="h3">Buy Price: ${quantity * stock.bid}</Header>
+                            </div>
+                        }
                     </div>
                 }
             </div>
