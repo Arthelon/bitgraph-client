@@ -1,13 +1,16 @@
-import d3 from 'd3'
-import PIXI from 'PIXI'
-import Spinner from "Spinner"
-import Stats from "Stats"
+import d3 from "d3";
+import PIXI from "PIXI";
+import Spinner from "Spinner";
+import _ from "lodash";
+import {CLUSTER_DATA} from "./constants"
+import {setCluster} from "./utils"
 
 const loadPixi = target => {
     // Interpolates the dataset for the given (fractional) iteration.
     var bisect = d3.bisector(function (d) {
         return d;
     });
+
     function interpolateData(iteration, iterations, results) {
         var i = bisect.left(iterations, iteration);
 
@@ -45,7 +48,7 @@ const loadPixi = target => {
     // Max element in array
     Array.prototype.max = function () {
         return Math.max.apply(null, this);
-    };  
+    };
 
     // Chart dimensions.
     var margin = {top: 52.5, right: 19.5, bottom: 19.5, left: 39.5},
@@ -120,17 +123,19 @@ const loadPixi = target => {
     spinnerText.innerText = "Loading cluster data...";
     spinner.el.appendChild(spinnerText);
     // Load the data.
-    d3.json("mnist.json", function(tsneData) {
+    d3.json("mnist.json", function (tsneData) {
         var iterations = tsneData.iterations,
-        maxIteration = iterations.max(),
-        results = tsneData.data,
-        animationDuration = 100;
+            maxIteration = iterations.max(),
+            results = tsneData.data,
+            animationDuration = 100;
 
         d3.csv("companies.csv", function (data) {
             spinnerText.innerText = "Unzipping image data...";
             var digits = [];
+            var symbols = [];
             for (var i = 0; i < 3100; i++) {
                 var digit = drawSprite(data[i].Symbol);
+                symbols.push(data[i].Symbol);
                 // center the sprite's anchor point
                 digit.anchor.x = 0.5;
                 digit.anchor.y = 0.5;
@@ -175,25 +180,43 @@ const loadPixi = target => {
             var buttonDiv = d3.select('body').append('div')
                 .attr('class', 'iteration')
                 .style({'position': 'absolute', 'top': height + margin.top - 20 + 'px', 'right': margin.right + 'px'});
-            var buttonStart = buttonDiv.append('button')
+            let clusterIndex = 0;
+            var clusterTitle = buttonDiv.append('input')
+                .attr('type', 'textbox')
+                .on("input", function () {
+                    let text = this.value;
+                    _.each(digits, (digit) => {
+                        digit.defaultTint = digit.tint = 0xFFFFFF;
+                    })
+                    _.each(CLUSTER_DATA, (cluster, cin) => {
+                        if (_.includes(cluster, text)) {
+                            var tint = digits[0].defaultTint == 0xFFFFFF ? 0x000000 : 0xFFFFFF;
+                            _.each(cluster, (symbol, index) => {
+                                digits[index].defaultTint = digits[index].tint = tint;
+                                digits[index].bringToFront();
+                            })
+                            clusterIndex = cin;
+
+                        }
+                    })
+                    if (!animating) renderMapbox();
+                })
+            // .on('click', function () {
+            //     startIteration();
+            // });
+            var buttonStop = buttonDiv.append('input')
                 .attr('type', 'button')
-                .text('start')
+                .attr('value', 'Login')
                 .on('click', function () {
-                    startIteration();
+                    setCluster(clusterIndex)
                 });
-            var buttonStop = buttonDiv.append('button')
-                .attr('type', 'button')
-                .text('stop')
-                .on('click', function () {
-                    stopIteration();
-                });
-            var buttonReset = buttonDiv.append('button')
-                .attr('type', 'button')
-                .text('reset')
-                .on('click', function () {
-                    label.text('000');
-                    startIteration();
-                });
+            // var buttonReset = buttonDiv.append('button')
+            //     .attr('type', 'button')
+            //     .text('reset')
+            //     .on('click', function () {
+            //         label.text('000');
+            //         startIteration();
+            //     });
             buttonDiv.append('button')
                 .attr('type', 'button')
                 .text('reset zoom')
@@ -201,16 +224,16 @@ const loadPixi = target => {
                     zoom.scale(1).translate([0, 0]);
                     zoomed();
                 });
-            buttonDiv.append('button')
-                .attr('type', 'button')
-                .text('toggle color')
-                .on('click', function () {
-                    var tint = digits[0].defaultTint == 0xFFFFFF ? 0x000000 : 0xFFFFFF;
-                    digits.forEach(function (digit) {
-                        digit.defaultTint = digit.tint = tint;
-                    });
-                    if (!animating) renderMapbox();
-                });
+            // buttonDiv.append('button')
+            //     .attr('type', 'button')
+            //     .text('toggle color')
+            //     .on('click', function () {
+            //         var tint = digits[0].defaultTint == 0xFFFFFF ? 0x000000 : 0xFFFFFF;
+            //         digits.forEach(function (digit) {
+            //             digit.defaultTint = digit.tint = tint;
+            //         });
+            //         if (!animating) renderMapbox();
+            //     });
 
             // stop spinner
             spinner.stop();
@@ -249,9 +272,9 @@ const loadPixi = target => {
             }
 
             function startIteration() {
-                buttonStart.attr('disabled', 'disabled');
-                buttonStop.attr('disabled', null);
-                buttonReset.attr('disabled', 'disabled');
+                // buttonStart.attr('disabled', 'disabled');
+                // buttonStop.attr('disabled', null);
+                // buttonReset.attr('disabled', 'disabled');
 
                 animating = true;
                 minimap.visible = false;
@@ -271,9 +294,9 @@ const loadPixi = target => {
             }
 
             function stopIteration() {
-                buttonStart.attr('disabled', null);
-                buttonStop.attr('disabled', 'disabled');
-                buttonReset.attr('disabled', null);
+                // buttonStart.attr('disabled', null);
+                // buttonStop.attr('disabled', 'disabled');
+                // buttonReset.attr('disabled', null);
 
                 svg.transition();
                 animating = false;
@@ -300,18 +323,18 @@ const loadPixi = target => {
                         zoom.scale(zoom.scale() * 0.9);
                         zoomed();
                         break;
-                    case 87: // w
-                        translate(0, height * 0.05);
-                        break;
-                    case 65: // a
-                        translate(width * 0.05, 0);
-                        break;
-                    case 83: // s
-                        translate(0, -height * 0.05);
-                        break;
-                    case 68: // d
-                        translate(-width * 0.05, 0);
-                        break;
+                    // case 87: // w
+                    //     translate(0, height * 0.05);
+                    //     break;
+                    // case 65: // a
+                    //     translate(width * 0.05, 0);
+                    //     break;
+                    // case 83: // s
+                    //     translate(0, -height * 0.05);
+                    //     break;
+                    // case 68: // d
+                    //     translate(-width * 0.05, 0);
+                    //     break;
                 }
 
                 function translate(dx, dy) {
@@ -368,7 +391,13 @@ const loadPixi = target => {
 
     // TODO: Set hitarea to a polygon
     function drawSprite(row) {
-        return new PIXI.Text(row, {fontFamily: 'Arial', fontSize: 28, fill: 0xd3d3d3, align: 'center', cacheBitmap: true});
+        return new PIXI.Text(row, {
+            fontFamily: 'Arial',
+            fontSize: 28,
+            fill: 0xd3d3d3,
+            align: 'center',
+            cacheBitmap: true
+        });
     }
 
 

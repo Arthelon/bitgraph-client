@@ -4,7 +4,6 @@ import {loadPixi, removePixi} from "../tsne-pixi"
 
 const styles = {
     width: "100%",
-    position: "absolute",
     height: "100%"
 }
 
