@@ -3,6 +3,23 @@ import dc from 'dc'
 import crossfilter from 'crossfilter'
 import d3 from 'd3'
 import data from './ndx.csv'
+import db from './db'
+import { CLUSTER_ID, CLUSTER_DATA } from './constants'
+
+let clusterRev = null
+ 
+export const setCluster = (index, pouch) => {
+     const database = pouch || db
+     database.put({
+        _id: CLUSTER_ID,
+        stocks: CLUSTER_DATA[index],
+        messages: [],
+        _rev: clusterRev
+    }).then(res => {
+        console.log(res)
+        clusterRev = res.rev
+    })
+}
 
 export const csvJSON = csv => {
   const data = csv.split(",")

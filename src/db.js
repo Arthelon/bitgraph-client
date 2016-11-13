@@ -1,6 +1,7 @@
 import Pouch from 'pouchdb'
 import { CLUSTER_ID, CLUSTER_DATA, CLUSTER_INDEX } from './constants'
 import uuid from 'uuid'
+import { setCluster } from './utils'
 
 const pouch = new Pouch("BitGraph")
 
@@ -20,9 +21,5 @@ const pouch = new Pouch("BitGraph")
 //         })
 //     })
 // })
-// pouch.put({
-//     _id: CLUSTER_ID,
-//     stocks: CLUSTER_DATA[CLUSTER_INDEX],
-//     messages: []
-// })
+// setCluster(2, pouch)
 export default pouch
