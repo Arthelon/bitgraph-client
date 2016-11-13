@@ -34,6 +34,7 @@ class StockForm extends Component {
             headers: { "Content-Type": "application/json"}
         }).then(res => {
             this.createMessage(true)
+            this.props.toggleUserGains()
             console.log(res.data)
         }, err => {
             this.createMessage(false)
@@ -55,7 +56,6 @@ class StockForm extends Component {
 
     createMessage(success) {
         this.form._form.reset()
-        console.log(this.form._form)
         if (success) {
             this.setState({
                 message: {

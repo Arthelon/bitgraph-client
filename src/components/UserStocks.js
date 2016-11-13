@@ -56,8 +56,8 @@ class UserStocks extends Component {
                                 return (<Table.Row key={stock.stock_symbol}>
                                     <Table.Cell>{stock.stock_symbol}</Table.Cell>
                                     <Table.Cell>{stock.name}</Table.Cell>
-                                    <Table.Cell>{JSON.stringify(stock.quantity)}</Table.Cell>
-                                    <Table.Cell>${JSON.stringify(stock.quantity * stock.bid)}</Table.Cell>
+                                    <Table.Cell>{JSON.stringify(Math.round(stock.quantity * 100) / 100)}</Table.Cell>
+                                    <Table.Cell>${JSON.stringify(Math.round(stock.quantity * stock.bid * 100) / 100)}</Table.Cell>
                                 </Table.Row>)
                             })}
                         </Table.Body>

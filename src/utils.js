@@ -7,17 +7,34 @@ import db from "./db";
 import {CLUSTER_ID, CLUSTER_DATA} from "./constants";
 
 export const setCluster = (index, pouch) => {
+    console.log("ENTERED SETCLUSTER")
     const database = pouch || db
+    console.log(database)
     database.get(CLUSTER_ID).then(res => {
+        console.log(res)
         database.put({
             _id: CLUSTER_ID,
             stocks: CLUSTER_DATA[index],
             messages: [],
             _rev: res._rev
+        }).then(res => {
+            console.log(res)
+        }, err => {
+            console.log(err)
         })
-            .then(res => {
+    }, err => {
+        if (err.name === "not_found")
+            database.put({
+                _id: CLUSTER_ID,
+                stocks: CLUSTER_DATA[index],
+                messages: []
+            }).then(res => {
                 console.log(res)
+            }, err => {
+                console.log(err)
             })
+        else
+            console.log(err)
     })
 
 }
@@ -445,7 +462,6 @@ export const ManyGraphsSetup = () => {
     var numberFormat = d3.format('.2f');
 
     data.forEach(function (d) {
-        console.log(d)
         d.dd = dateFormat.parse(d.date);
         d.month = d3.time.month(d.dd); // pre-calculate month for better performance
         d.close = +d.close; // coerce to number
