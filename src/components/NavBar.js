@@ -28,7 +28,7 @@ class NavBar extends Component {
         const { currPage } = this.state
 
         return (
-            <Menu style={{marginBottom: 0, zIndex: 1000}}>
+            <Menu style={{marginBottom: 0, zIndex: 1000}} fluid>
                 <Menu.Item
                     name="Clusters"
                     active={currPage === ""}
