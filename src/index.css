@@ -436,7 +436,7 @@ g.dc-legend-item.fadeout {
 #chart svg, #chart canvas {
         position: absolute;
         left: 0;
-        top: 0;
+        top: 40px;
     }
 
     text {
